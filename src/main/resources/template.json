@@ -1,0 +1,17 @@
+{
+  "path": "data",
+  "as": {
+    "id": "_id",
+    "lat": "coordinates.latitude",
+    "long": "coordinates.longitude",
+    "test": true,
+    "length": "aboutLength",
+    "fr": {
+      "path": "friends",
+      "as": {
+        "fullName": "name"
+      }
+    }
+
+  }
+}
