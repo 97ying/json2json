@@ -25,6 +25,10 @@ public class Json2Json {
 
         Object output = transformArray(inputJsonObject, jsonTemplateObject);
 
+        if (output == null) {
+            return "{}";
+        }
+
         return JSON.toJSONString(output);
     }
 
@@ -38,7 +42,11 @@ public class Json2Json {
                     String path = (String)entry.getValue();
                     path = path.startsWith(".") ? "$" : "$." + path;
 
-                    items = JSONPath.eval(inputJsonObject, path);
+                    try {
+                        items = JSONPath.eval(inputJsonObject, path);
+                    } catch (Exception e) {
+                        LOGGER.warn("Invalid JSON path: {} for item: {}", path, ((JSONObject) inputJsonObject).toJSONString(), e);
+                    }
                     break;
                 }
                 case KEY_AS: {
@@ -56,9 +64,6 @@ public class Json2Json {
 
                             ((JSONArray)output).add(outputItem);
                         }
-
-
-
                     } else if (items instanceof JSONObject) {
                         if (output == null) {
                             output = new JSONObject();
@@ -86,8 +91,8 @@ public class Json2Json {
         return output;
     }
 
-    public static Object getValue(Object item, Object template) {
-        Object value = null;
+    private static Object getValue(Object item, Object template) {
+        Object value;
 
         if (template instanceof JSONObject && ((JSONObject)template).get(KEY_PATH) != null && ((JSONObject)template).get(KEY_AS) != null) {
             value = Json2Json.transformArray(item, (JSONObject) template);

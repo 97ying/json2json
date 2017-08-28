@@ -54,6 +54,23 @@ public class Json2JsonTest {
     }
 
     @Test
+    public void testInvalidPath2Function() throws JSONException {
+        String input = "{\n" +
+                "   \"key2\": \"value2\"\n" +
+                "}";
+        String template = "{\n" +
+                "  \"path\": \"invalid-path\",\n" +
+                "  \"as\": {\n" +
+                "    \"key1\": \"key2[]\"\n" +
+                "  }\n" +
+                "}";
+
+        String output = Json2Json.transformJson(input, template);
+        LOGGER.info(output);
+        JSONAssert.assertEquals("{}", output, true);
+    }
+
+    @Test
     public void testInvalidPathFunction() throws JSONException {
         String input = "{\n" +
                 "   \"key2\": \"value2\"\n" +
