@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by ejaiwng on 8/14/2017.
@@ -18,24 +19,22 @@ public class Json2Json {
 
     private final static String KEY_PATH = "path";
     private final static String KEY_AS = "as";
+    private final static String EMPTY_JSON = "{}";
 
     public static String transformJson(String inputJson, String template) {
         Object inputJsonObject = JSON.parse(inputJson);
         JSONObject jsonTemplateObject = JSON.parseObject(template);
 
-        Object output = transformArray(inputJsonObject, jsonTemplateObject);
+        Optional<Object> output = transformArray(inputJsonObject, jsonTemplateObject);
 
-        if (output == null) {
-            return "{}";
-        }
-
-        return JSON.toJSONString(output);
+        return output.map(o -> JSON.toJSONString(o)).orElse(EMPTY_JSON);
     }
 
-    public static Object transformArray(Object inputJsonObject, JSONObject template) {
+    public static Optional<Object> transformArray(Object inputJsonObject, JSONObject template) {
 
         Object output = null;
         Object items = null;
+
         for (Map.Entry<String, Object> entry : template.entrySet()) {
             switch (entry.getKey()) {
                 case KEY_PATH: {
@@ -45,7 +44,7 @@ public class Json2Json {
                     try {
                         items = JSONPath.eval(inputJsonObject, path);
                     } catch (Exception e) {
-                        LOGGER.warn("Invalid JSON path: {} for item: {}", path, ((JSONObject) inputJsonObject).toJSONString(), e);
+                        LOGGER.warn("Invalid JSON path: {} for item: {}", path, JSON.toJSONString(inputJsonObject), e);
                     }
                     break;
                 }
@@ -88,13 +87,13 @@ public class Json2Json {
         }
 
 
-        return output;
+        return Optional.ofNullable(output);
     }
 
     private static Object getValue(Object item, Object template) {
         Object value;
 
-        if (template instanceof JSONObject && ((JSONObject)template).get(KEY_PATH) != null && ((JSONObject)template).get(KEY_AS) != null) {
+        if (template instanceof JSONObject) {
             value = Json2Json.transformArray(item, (JSONObject) template);
         } else if (template instanceof String){
             String outputTemplate = (String) template;
@@ -103,18 +102,13 @@ public class Json2Json {
                 value = ((JSONObject)item).get(outputTemplate);
             } else {
                 String path = outputTemplate.equals(".") ? "$" : "$." + outputTemplate;
-                Object itemValue = null;
+                Optional<Object> itemValue = Optional.empty();
                 try {
-                    itemValue = JSONPath.eval(item, path);
+                    itemValue = Optional.ofNullable(JSONPath.eval(item, path));
                 } catch (Exception e) {
-                    LOGGER.warn("Invalid JSON path: {} for item: {}", path, ((JSONObject) item).toJSONString(), e);
+                    LOGGER.warn("Invalid JSON path: {} for item: {}", path, JSON.toJSONString(item), e);
                 }
-
-                if (itemValue != null) {
-                    value = itemValue;
-                } else {
-                    value = outputTemplate;
-                }
+                value = itemValue.orElse(outputTemplate);
             }
         } else {
             value = template;
