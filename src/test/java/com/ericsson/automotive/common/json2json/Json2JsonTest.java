@@ -21,6 +21,22 @@ public class Json2JsonTest {
     private final static Logger LOGGER = LoggerFactory.getLogger(Json2JsonTest.class);
 
     @Test
+    public void testJson2JsonPerformance() throws Exception {
+
+        String input = getFileContent("original.json");
+        String template = getFileContent("template.json");
+
+        long startTime = System.currentTimeMillis();
+        int loopCount = 100000;
+        for (int i = 0; i < loopCount; i++) {
+            Json2Json.transformJson(input, template);
+        }
+        long endTime = System.currentTimeMillis();
+
+        LOGGER.info("Json2Json performance: total transformation [{}], spent time [{}ms]", loopCount, endTime - startTime);
+    }
+
+    @Test
     public void testComplexJson2Json() throws Exception {
 
         String input = getFileContent("original.json");
