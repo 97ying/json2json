@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -11,6 +13,8 @@ import java.util.Map;
  * Created by ejaiwng on 8/14/2017.
  */
 public class Json2Json {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(Json2Json.class);
 
     private final static String KEY_PATH = "path";
     private final static String KEY_AS = "as";
@@ -39,7 +43,9 @@ public class Json2Json {
                 }
                 case KEY_AS: {
                     if (items instanceof JSONArray) {
-                        output = new JSONArray();
+                        if (output == null) {
+                            output = new JSONArray();
+                        }
 
                         for(Object item : (JSONArray)items) {
                             JSONObject outputItem = new JSONObject();
@@ -54,7 +60,9 @@ public class Json2Json {
 
 
                     } else if (items instanceof JSONObject) {
-                        output = new JSONObject();
+                        if (output == null) {
+                            output = new JSONObject();
+                        }
 
                         for(Map.Entry<String, Object> templateEntry : ((JSONObject)template.get(KEY_AS)).entrySet()) {
                             ((JSONObject)output).put(templateEntry.getKey(), Json2Json.getValue(items, templateEntry.getValue()));
@@ -64,8 +72,10 @@ public class Json2Json {
                     break;
                 }
                 default: {
-                    if (entry.getValue() instanceof JSONArray) {
-                        output = new JSONObject();
+                    if (entry.getValue() instanceof JSONObject) {
+                        if (output == null) {
+                            output = new JSONObject();
+                        }
                         ((JSONObject)output).put(entry.getKey(), Json2Json.getValue(inputJsonObject, entry.getValue()));
                     }
                 }
@@ -80,7 +90,7 @@ public class Json2Json {
         Object value = null;
 
         if (template instanceof JSONObject && ((JSONObject)template).get(KEY_PATH) != null && ((JSONObject)template).get(KEY_AS) != null) {
-            Json2Json.transformArray(item, (JSONObject) template);
+            value = Json2Json.transformArray(item, (JSONObject) template);
         } else if (template instanceof String){
             String outputTemplate = (String) template;
 
@@ -88,8 +98,12 @@ public class Json2Json {
                 value = ((JSONObject)item).get(outputTemplate);
             } else {
                 String path = outputTemplate.equals(".") ? "$" : "$." + outputTemplate;
-
-                Object itemValue = JSONPath.eval(item, path);
+                Object itemValue = null;
+                try {
+                    itemValue = JSONPath.eval(item, path);
+                } catch (Exception e) {
+                    LOGGER.warn("Invalid JSON path: {} for item: {}", path, ((JSONObject) item).toJSONString(), e);
+                }
 
                 if (itemValue != null) {
                     value = itemValue;
