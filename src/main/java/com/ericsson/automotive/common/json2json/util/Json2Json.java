@@ -1,4 +1,4 @@
-package com.ericsson.automotive.common.json2json.tomcat.util;
+package com.ericsson.automotive.common.json2json.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -21,7 +21,8 @@ public final class Json2Json {
     private final static String KEY_AS = "as";
     private final static String EMPTY_JSON = "{}";
 
-    private Json2Json() {}
+    private Json2Json() {
+    }
 
     public static String transformJson(String inputJson, String template) {
         Object inputJsonObject = JSON.parse(inputJson);
@@ -40,7 +41,7 @@ public final class Json2Json {
         for (Map.Entry<String, Object> entry : template.entrySet()) {
             switch (entry.getKey()) {
                 case KEY_PATH: {
-                    String path = (String)entry.getValue();
+                    String path = (String) entry.getValue();
                     path = path.startsWith(".") ? "$" : "$." + path;
 
                     try {
@@ -54,20 +55,20 @@ public final class Json2Json {
                     if (items instanceof JSONArray) {
                         output = Optional.ofNullable(output).orElse(new JSONArray());
 
-                        for(Object item : (JSONArray)items) {
+                        for (Object item : (JSONArray) items) {
                             JSONObject outputItem = new JSONObject();
 
-                            for(Map.Entry<String, Object> templateEntry : ((JSONObject)template.get(KEY_AS)).entrySet()) {
+                            for (Map.Entry<String, Object> templateEntry : ((JSONObject) template.get(KEY_AS)).entrySet()) {
                                 outputItem.put(templateEntry.getKey(), Json2Json.getValue(item, templateEntry.getValue()));
                             }
 
-                            ((JSONArray)output).add(outputItem);
+                            ((JSONArray) output).add(outputItem);
                         }
                     } else if (items instanceof JSONObject) {
                         output = Optional.ofNullable(output).orElse(new JSONObject());
 
-                        for(Map.Entry<String, Object> templateEntry : ((JSONObject)template.get(KEY_AS)).entrySet()) {
-                            ((JSONObject)output).put(templateEntry.getKey(), Json2Json.getValue(items, templateEntry.getValue()));
+                        for (Map.Entry<String, Object> templateEntry : ((JSONObject) template.get(KEY_AS)).entrySet()) {
+                            ((JSONObject) output).put(templateEntry.getKey(), Json2Json.getValue(items, templateEntry.getValue()));
                         }
                     }
 
@@ -76,7 +77,7 @@ public final class Json2Json {
                 default: {
                     if (entry.getValue() instanceof JSONObject) {
                         output = Optional.ofNullable(output).orElse(new JSONObject());
-                        ((JSONObject)output).put(entry.getKey(), Json2Json.getValue(inputJsonObject, entry.getValue()));
+                        ((JSONObject) output).put(entry.getKey(), Json2Json.getValue(inputJsonObject, entry.getValue()));
                     }
                 }
             }
@@ -91,11 +92,11 @@ public final class Json2Json {
 
         if (template instanceof JSONObject) {
             value = Json2Json.transformJson(item, (JSONObject) template);
-        } else if (template instanceof String){
+        } else if (template instanceof String) {
             String outputTemplate = (String) template;
 
-            if (((JSONObject)item).containsKey(outputTemplate)) {
-                value = ((JSONObject)item).get(outputTemplate);
+            if (((JSONObject) item).containsKey(outputTemplate)) {
+                value = ((JSONObject) item).get(outputTemplate);
             } else {
                 String path = outputTemplate.equals(".") ? "$" : "$." + outputTemplate;
                 Optional<Object> itemValue = Optional.empty();

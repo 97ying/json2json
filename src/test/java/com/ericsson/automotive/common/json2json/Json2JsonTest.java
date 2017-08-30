@@ -1,6 +1,6 @@
 package com.ericsson.automotive.common.json2json;
 
-import com.ericsson.automotive.common.json2json.tomcat.util.Json2Json;
+import com.ericsson.automotive.common.json2json.util.Json2Json;
 import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -17,7 +17,7 @@ import java.nio.file.Paths;
  * Created by ejaiwng on 8/25/2017.
  */
 public class Json2JsonTest {
-    
+
     private final static Logger LOGGER = LoggerFactory.getLogger(Json2JsonTest.class);
 
     @Test

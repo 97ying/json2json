@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package com.ericsson.automotive.common.json2json.tomcat.web;
+package com.ericsson.automotive.common.json2json;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.ericsson.automotive.common.json2json.tomcat.service.HelloWorldService;
+@SpringBootApplication
+public class Json2JsonRestApplication {
 
-@Controller
-public class SampleController {
-
-	@Autowired
-	private HelloWorldService helloWorldService;
-
-	@RequestMapping("/")
-	@ResponseBody
-	public String helloWorld() {
-		return this.helloWorldService.getHelloMessage();
-	}
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Json2JsonRestApplication.class, args);
+    }
 
 }
