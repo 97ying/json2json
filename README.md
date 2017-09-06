@@ -4,7 +4,7 @@ Transform (reformat) JSON structures from one to another based on a template usi
 This is inspired from JSON2JSON mapper (https://github.com/waqqas/json2json)
 
 
-#Installation
+# Installation
 
 You can download the latest version by cloning https://github.com/97ying/json2json.git
 
