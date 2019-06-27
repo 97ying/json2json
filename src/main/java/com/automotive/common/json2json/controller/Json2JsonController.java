@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package com.ericsson.automotive.common.json2json.controller;
+package com.automotive.common.json2json.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
-import com.ericsson.automotive.common.json2json.Exception.ServiceException;
-import com.ericsson.automotive.common.json2json.model.JsonTemplate;
-import com.ericsson.automotive.common.json2json.model.ResponseMessage;
-import com.ericsson.automotive.common.json2json.service.Json2JsonService;
-import com.ericsson.automotive.common.json2json.util.Json2Json;
+import com.automotive.common.json2json.model.ResponseMessage;
+import com.automotive.common.json2json.util.Json2Json;
+import com.automotive.common.json2json.Exception.ServiceException;
+import com.automotive.common.json2json.service.Json2JsonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

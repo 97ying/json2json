@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ericsson.automotive.common.json2json;
+package com.automotive.common.json2json;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

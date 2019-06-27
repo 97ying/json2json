@@ -1,4 +1,4 @@
-package com.ericsson.automotive.common.json2json.model;
+package com.automotive.common.json2json.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

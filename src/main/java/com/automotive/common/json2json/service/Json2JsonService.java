@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.ericsson.automotive.common.json2json.service;
+package com.automotive.common.json2json.service;
 
-import com.ericsson.automotive.common.json2json.model.JsonTemplate;
-import com.ericsson.automotive.common.json2json.dao.JsonTemplateRepository;
+import com.automotive.common.json2json.dao.JsonTemplateRepository;
+import com.automotive.common.json2json.model.JsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

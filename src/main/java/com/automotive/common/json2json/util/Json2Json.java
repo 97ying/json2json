@@ -1,4 +1,4 @@
-package com.ericsson.automotive.common.json2json.util;
+package com.automotive.common.json2json.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;

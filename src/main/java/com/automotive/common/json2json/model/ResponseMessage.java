@@ -1,4 +1,4 @@
-package com.ericsson.automotive.common.json2json.model;
+package com.automotive.common.json2json.model;
 
 /**
  * Created by ejaiwng on 8/30/2017.

@@ -1,4 +1,4 @@
-package com.ericsson.automotive.common.json2json.Exception;
+package com.automotive.common.json2json.Exception;
 
 /**
  * Created by ejaiwng on 8/30/2017.

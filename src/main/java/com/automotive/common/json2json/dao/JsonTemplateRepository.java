@@ -1,6 +1,6 @@
-package com.ericsson.automotive.common.json2json.dao;
+package com.automotive.common.json2json.dao;
 
-import com.ericsson.automotive.common.json2json.model.JsonTemplate;
+import com.automotive.common.json2json.model.JsonTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
