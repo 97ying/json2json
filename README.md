@@ -16,7 +16,7 @@ You can download the latest version by cloning https://github.com/97ying/json2js
 ```
 <dependency>
     <artifactId>json2json</artifactId>
-	<groupId>com.ericsson.automotive.common.json2json</groupId>
+	<groupId>com.automotive.common.json2json</groupId>
 	<version>1.0-SNAPSHOT</version>
 </dependency>
 ```
